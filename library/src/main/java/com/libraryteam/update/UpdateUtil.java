@@ -55,7 +55,7 @@ public class UpdateUtil {
     /**
      * 显示通知栏进度提醒
      */
-    private boolean mShowNotification = true;
+    private boolean mShowNotification = false;
     /**
      * 通知id
      */
@@ -124,6 +124,7 @@ public class UpdateUtil {
                     @Override
                     public void onResponse(String response, int id) {
                         mUpdate = new Gson().fromJson(response, Update.class);
+                        mUpdate.getData().setVersion("4.6.2");
                         setAction(mUpdate);
                     }
                 });
@@ -317,7 +318,15 @@ public class UpdateUtil {
                     .title("努力下载中....")
                     .content("请稍候...")
                     .contentGravity(GravityEnum.CENTER)
-                    .progress(false, 100, true);
+                    .progress(false, 100, true)
+                    .dismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            if (progressDialog != null)
+                                if (progressDialog.getCurrentProgress() < 100 && !mShowNotification)
+                                    mShowNotification = true;
+                        }
+                    });
             progressDialog = builder.build();
         }
         return progressDialog;
