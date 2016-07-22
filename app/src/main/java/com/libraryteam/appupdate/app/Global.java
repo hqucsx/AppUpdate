@@ -30,7 +30,7 @@ public class Global extends Application {
                 .build();
 
         OkHttpUtils.initClient(okHttpClient);
-        UpdateUtil.updateUrl = "xxxxxx";
+        UpdateUtil.updateUrl = "xxxxx";
     }
     public static Global getInstance(){
         return instance;

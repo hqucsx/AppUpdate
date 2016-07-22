@@ -2,6 +2,7 @@ package com.libraryteam.update;/**
  * Created by PCPC on 2016/7/13.
  */
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -126,6 +128,7 @@ public class UpdateUtil {
                     }
                 });
     }
+
     /**
      * 检查更新并自定义处理结果
      *
@@ -192,16 +195,33 @@ public class UpdateUtil {
      * @param update
      */
     private void update(Update update) {
-        //文件保存路径
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName = getPackageName(mContext) + update.getData().getVersion() + "10.apk";
+        File file = null;
+        String filePath = "";
+        String fileName = "";
+        if ((ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) { //判断sd卡是否存在
+            //文件保存路径
+            filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            fileName = getPackageName(mContext) + update.getData().getVersion() + ".apk";
 
-        File file = new File(filePath + "/" + fileName);
-        if (file.exists() && checkApkFile(file.getAbsolutePath())) {
-            installApk(file);
-            return;
+            file = new File(filePath, fileName);
+            if (file.exists() && checkApkFile(file.getAbsolutePath())) {
+                installApk(file);
+                return;
+            } else {
+                file.delete();
+            }
         } else {
-            file.delete();
+            File cacheDir = getCacheDir();
+            cacheDir.mkdirs();
+            filePath = cacheDir.getAbsolutePath();
+            fileName = getPackageName(mContext) + update.getData().getVersion() + ".apk";
+            file = new File(cacheDir, fileName);
+            if (file.exists() && checkApkFile(file.getAbsolutePath())) {
+                installApk(file);
+                return;
+            } else {
+                file.delete();
+            }
         }
         //对话框提醒
         if (mShowProgressDialog)
@@ -315,6 +335,20 @@ public class UpdateUtil {
         String type = "application/vnd.android.package-archive";
         intent.setDataAndType(Uri.fromFile(file), type);
         mContext.startActivity(intent);
+    }
+
+    /**
+     * 如果不存在sd卡
+     *
+     * @return
+     */
+    private File getCacheDir() {
+        File cacheDir = mContext.getExternalCacheDir();
+        if (cacheDir == null) {
+            cacheDir = mContext.getCacheDir();
+        }
+        cacheDir = new File(cacheDir, "update");
+        return cacheDir;
     }
 
     /**

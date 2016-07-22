@@ -40,3 +40,7 @@ so 自己动手吧
 ![screenshot](https://raw.github.com/hqucsx/AppUpdate/master/screenshots/1.png)
 ![screenshot](https://raw.github.com/hqucsx/AppUpdate/master/screenshots/2.png)
 ![screenshot](https://raw.github.com/hqucsx/AppUpdate/master/screenshots/3.png)
+
+
+###changelog
+修改安装文件的保存位置，如果sd卡存在并有写入的权限时，保存在sd卡，否则保存在缓存区（6.0权限默认不授予）
