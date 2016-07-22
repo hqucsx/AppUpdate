@@ -124,7 +124,6 @@ public class UpdateUtil {
                     @Override
                     public void onResponse(String response, int id) {
                         mUpdate = new Gson().fromJson(response, Update.class);
-                        mUpdate.getData().setVersion("4.6.2");
                         setAction(mUpdate);
                     }
                 });
