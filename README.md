@@ -11,7 +11,9 @@ so 自己动手吧
 
 ####1、导入library项目
 在Application中配置应用检查地址
-    `UpdateUtil.updateUrl = url;
+
+    `UpdateUtil.updateUrl = url;`
+    
 可配置通知栏方式可对话框方式
 
 * > 默认方式(同时使用通知栏与对话框，无更新时会提示，有更新时弹出对话框)
