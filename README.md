@@ -1,3 +1,13 @@
+# 在此处输入标题
+
+标签（空格分隔）： 未分类
+
+---
+
+在此输入正文
+
+
+
 ##Android 应用自动更新(AppUpdate)
 
 之前一直使用友盟的自动更新，用的挺好的，但是10月份就会下架，现在处于维护可用状态。。有些机型已经不能使用了，，各种下载失败，无更新提示。
@@ -12,7 +22,7 @@ so 自己动手吧
 ####1、导入library项目
 在Application中配置应用检查地址
 
-    `UpdateUtil.updateUrl = url;`
+    UpdateUtil.updateUrl = url;
     
 可配置通知栏方式可对话框方式
 
@@ -37,10 +47,27 @@ so 自己动手吧
 
 ####2、添加权限
 
-    `<uses-permission android:name="android.permission.INTERNET" />`
-    `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-####3、使用截图
+#####3、当前接口返回数据格式
+
+    {
+         "success": true,
+         "message": "版本信息",
+         "data": {
+             "limit": false,//是否强制更新
+             "time": 1467947414000,
+             "desc": "更新描述",
+             "path": "下载路径",
+             "channel": "渠道",
+             "innerCode": versionCode,
+             "version": "versionName"
+         }
+     }
+
+可根据自己的更新接口返回数据格式进行修改
+####4、使用截图
 ![screenshot](https://raw.github.com/hqucsx/AppUpdate/master/screenshots/1.png)
 ![screenshot](https://raw.github.com/hqucsx/AppUpdate/master/screenshots/2.png)
 ![screenshot](https://raw.github.com/hqucsx/AppUpdate/master/screenshots/3.png)
@@ -49,3 +76,4 @@ so 自己动手吧
 ###changelog
 * > 修改安装文件的保存位置，如果sd卡存在并有写入的权限时，保存在sd卡，否则保存在缓存区（6.0权限默认不授予）
 * > 修改通知策略，默认只使用对话框通知下载进度
+
